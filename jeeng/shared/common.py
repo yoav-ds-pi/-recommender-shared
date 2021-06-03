@@ -1,22 +1,26 @@
 import enum
 import hashlib
-from typing import Dict, Any
+from typing import Dict, Any, Optional, Union
 
-CompositeObj = Dict[str, Any]
+CompositeDict = Dict[str, Any]
 
 
 class Events(enum.Enum):
     url_extracted = 1
     user_visited_page = 2
 
-
-def generate_url_ext_key(url: str, domain_id: str):
-    if url and domain_id:
-        return f'{domain_id}-{hashlib.md5(url.encode("utf-8")).hexdigest()}'
-    return None
+############
+# doc keys #
+############
 
 
-def generate_url_agg_key(year, dayofyear, url, domain_id):
-    if year and dayofyear and url and domain_id:
-        return f'{domain_id}-{hashlib.md5(url.encode("utf-8")).hexdigest()}-{year}-{dayofyear}'
-    return None
+def str_digest(s: str) -> str:
+    return hashlib.md5(s.encode("utf-8")).hexdigest()
+
+
+def generate_key_url_ext(domain_id: str, url: str) -> Optional[str]:
+    return f'{domain_id}-{str_digest(url)}' if url and domain_id else None
+
+
+def generate_key_url_agg(domain_id: str, url: str, year: Union[int, str], dayofyear: Union[int, str]) -> Optional[str]:
+    return f'{domain_id}-{str_digest(url)}-{year}-{dayofyear}' if year and dayofyear and url and domain_id else None

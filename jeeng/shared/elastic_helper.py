@@ -3,14 +3,14 @@ from elasticsearch.helpers import streaming_bulk
 from collections import Counter
 from dataclasses import dataclass
 from typing import List
-from jeeng.shared.common import CompositeObj
+from jeeng.shared.common import CompositeDict
 
 
 @dataclass(frozen=True)
 class BulkUpserterResult:
     num_of_actions: int
     success: int
-    errors: List[CompositeObj]
+    errors: List[CompositeDict]
 
     def print(self, name: str):
         if not self.errors:
@@ -28,7 +28,7 @@ class BulkUpserter:
     def __init__(self, elastic_client: Elasticsearch):
         self.elastic_client = elastic_client
 
-    def bulk(self, actions: List[CompositeObj]) -> BulkUpserterResult:
+    def bulk(self, actions: List[CompositeDict]) -> BulkUpserterResult:
         success = 0
         errors = []
         for ok, item in streaming_bulk(
