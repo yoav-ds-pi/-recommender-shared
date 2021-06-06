@@ -5,6 +5,11 @@ from typing import Dict, Any, Optional, Union
 CompositeDict = Dict[str, Any]
 
 
+class UnimplementedException(Exception):
+    def __init__(self):
+        super().__init__("Unimplemented method")
+
+
 class Events(enum.Enum):
     url_extracted = 1
     user_visited_page = 2
