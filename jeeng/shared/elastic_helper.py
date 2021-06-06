@@ -6,6 +6,15 @@ from typing import List
 from jeeng.shared.common import CompositeDict
 
 
+def elastic_connect(es_url: str, es_user: str, es_password: str) -> Elasticsearch:
+    return Elasticsearch(
+        hosts=[es_url],
+        http_auth=(es_user, es_password),
+        scheme="https",
+        port=9200,
+    )
+
+
 @dataclass(frozen=True)
 class BulkUpserterResult:
     num_of_actions: int
