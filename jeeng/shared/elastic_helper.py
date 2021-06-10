@@ -12,6 +12,9 @@ def elastic_connect(es_url: str, es_user: str, es_password: str) -> Elasticsearc
         http_auth=(es_user, es_password),
         scheme="https",
         port=9200,
+        timeout=30,
+        max_retries=3,
+        retry_on_timeout=True
     )
 
 
