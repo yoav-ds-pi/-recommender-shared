@@ -2,7 +2,7 @@ from elasticsearch.client import Elasticsearch
 from elasticsearch.helpers import streaming_bulk
 from collections import Counter
 from dataclasses import dataclass
-from typing import List
+from typing import List, Iterable, Union, AsyncIterable
 from jeeng.shared.common import CompositeDict
 
 
@@ -18,18 +18,21 @@ def elastic_connect(es_url: str, es_user: str, es_password: str) -> Elasticsearc
     )
 
 
+IterableActions = Union[Iterable[CompositeDict], AsyncIterable[CompositeDict]]
+
+
 @dataclass(frozen=True)
 class BulkUpserterResult:
-    num_of_actions: int
+    op_type: str
     success: int
     errors: List[CompositeDict]
 
     def print(self, name: str):
         if not self.errors:
-            print(f'{name}: {self.num_of_actions} actions, {self.success} ok')
+            print(f'{name}: {self.success} ok')
         else:
-            print(f'{name}: {self.num_of_actions} actions, {self.success} ok, {len(self.errors)} failed')
-            error_types = (d['update']['error']['type'] for d in self.errors)
+            print(f'{name}: {self.success} ok, {len(self.errors)} failed')
+            error_types = (d[self.op_type].get('error', {}).get('type', "UNKNOWN_ERROR") for d in self.errors)
             print("error_types: " + "; ".join(
                 f"{k}: {v}" for k, v in sorted(Counter(error_types).items(), key=lambda t: -t[1]))
             )
@@ -37,15 +40,27 @@ class BulkUpserterResult:
 
 
 class BulkUpserter:
-    def __init__(self, elastic_client: Elasticsearch):
+    def __init__(self, elastic_client: Elasticsearch, index: str):
         self.elastic_client = elastic_client
+        self.index = index
 
-    def bulk(self, actions: List[CompositeDict]) -> BulkUpserterResult:
+    def _prep_action(self, action: CompositeDict, op_type: str):
+        action["_index"] = self.index
+        action["_op_type"] = op_type
+        return action
+
+    def bulk_index(self, actions: IterableActions):
+        return self.bulk_actions(op_type="index", actions=actions)
+
+    def bulk_update(self, actions: IterableActions):
+        return self.bulk_actions(op_type="update", actions=actions)
+
+    def bulk_actions(self, actions: IterableActions, op_type: str) -> BulkUpserterResult:
         success = 0
         errors = []
         for ok, item in streaming_bulk(
             client=self.elastic_client,
-            actions=actions,
+            actions=(self._prep_action(action, op_type) for action in actions) if op_type else actions,
             raise_on_error=False,
             raise_on_exception=True,
             max_retries=3,
@@ -56,4 +71,4 @@ class BulkUpserter:
             else:
                 errors.append(item)
         # TODO can retry here
-        return BulkUpserterResult(num_of_actions=len(actions), success=success, errors=errors)
+        return BulkUpserterResult(op_type=op_type, success=success, errors=errors)
