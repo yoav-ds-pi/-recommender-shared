@@ -4,6 +4,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class StressTestConfig:
     URL_USER_INDEX: str
+    SCORED_URLS_INDEX: str
     N_DOMAINS: int
     N_URLS: int
     N_SUBS: int
