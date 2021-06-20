@@ -26,9 +26,9 @@ STRESS_SMALL = StressTestConfig(
 STRESS_LARGE = StressTestConfig(
     URL_USER_INDEX='url_user_index_synt_large',
     SCORED_URLS_INDEX='scored_urls_synt_large',
-    N_DOMAINS=100,
-    N_URLS=10_000,
-    N_SUBS=100_000,
+    N_DOMAINS=4,
+    N_URLS=5000,
+    N_SUBS=5000,
     N_ENTS=5,
     N_VISITS=10
 )
