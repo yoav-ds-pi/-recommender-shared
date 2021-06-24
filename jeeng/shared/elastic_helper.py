@@ -18,6 +18,12 @@ def elastic_connect(es_url: str, es_user: str, es_password: str) -> Elasticsearc
     )
 
 
+def get_hits(r: CompositeDict) -> List[CompositeDict]:
+    if r.get('status', 0) != 200 or r.get('timed_out', False) or not (hits := r.get('hits', {}).get('hits', [])):
+        return []
+    return hits
+
+
 IterableActions = Union[Iterable[CompositeDict], AsyncIterable[CompositeDict]]
 
 
@@ -35,7 +41,7 @@ class BulkUpserterResult:
             error_types = (d[self.op_type].get('error', {}).get('type', "UNKNOWN_ERROR") for d in self.errors)
             print("error_types: " + "; ".join(
                 f"{k}: {v}" for k, v in sorted(Counter(error_types).items(), key=lambda t: -t[1]))
-            )
+                  )
         return self
 
 
@@ -59,12 +65,12 @@ class BulkUpserter:
         success = 0
         errors = []
         for ok, item in streaming_bulk(
-            client=self.elastic_client,
-            actions=(self._prep_action(action, op_type) for action in actions) if op_type else actions,
-            raise_on_error=False,
-            raise_on_exception=True,
-            max_retries=3,
-            yield_ok=True
+                client=self.elastic_client,
+                actions=(self._prep_action(action, op_type) for action in actions) if op_type else actions,
+                raise_on_error=False,
+                raise_on_exception=True,
+                max_retries=3,
+                yield_ok=True
         ):
             if ok:
                 success += 1
