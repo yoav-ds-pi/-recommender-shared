@@ -15,7 +15,7 @@ DOC_TYPE = 'doc_type'
 DOC_TYPE_URL = 'url_doc'
 DOC_TYPE_USER = 'user_doc'
 DOC_TYPE_SCORED_URLS = 'scored_urls'
-DOC_TYPE_CANDIDATES = 'candidate_urls'
+DOC_TYPE_CANDIDATES = 'candidates_for_domain'
 
 DOMAIN = 'domain'
 DOMAIN_ID = 'domain_id'
