@@ -10,10 +10,6 @@ class UnimplementedException(Exception):
         super().__init__("Unimplemented method")
 
 
-class Events(enum.Enum):
-    url_extracted = 1
-    user_visited_page = 2
-
 ############
 # doc keys #
 ############

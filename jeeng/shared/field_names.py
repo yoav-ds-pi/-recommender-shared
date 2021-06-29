@@ -23,7 +23,11 @@ DOMAIN_NAME = 'domain_name'
 EMOTIONS = 'emotions'
 ENTITIES = 'entities'
 EVENT_SOURCE = 'event_source'
+
 EVENT_TYPE = 'event_type'
+EVENT_URL_EXTRACTED =  'url_extracted'
+EVENT_USER_VISIT = 'user_visited_page'
+
 EXTRACTED_TEXT = 'extracted_text'
 FULL_URL = 'full_url'
 IBM = 'ibm'
