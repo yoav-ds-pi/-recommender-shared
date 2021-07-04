@@ -40,15 +40,17 @@ class BulkUpserterResult:
             print(f'{name}: {self.success} ok, {len(self.errors)} failed')
             error_types = (d[self.op_type].get('error', {}).get('type', "UNKNOWN_ERROR") for d in self.errors)
             print("error_types: " + "; ".join(
-                f"{k}: {v}" for k, v in sorted(Counter(error_types).items(), key=lambda t: -t[1]))
-                  )
+                f"{k}: {v}"
+                for k, v in sorted(Counter(error_types).items(), key=lambda t: -t[1]))
+            )
         return self
 
 
 class BulkUpserter:
-    def __init__(self, elastic_client: Elasticsearch, index: str):
+    def __init__(self, elastic_client: Elasticsearch, index: str, request_timeout: int = 60):
         self.elastic_client = elastic_client
         self.index = index
+        self.request_timeout = request_timeout
 
     def _prep_action(self, action: CompositeDict, op_type: str):
         action["_index"] = self.index
@@ -70,7 +72,8 @@ class BulkUpserter:
                 raise_on_error=False,
                 raise_on_exception=True,
                 max_retries=3,
-                yield_ok=True
+                yield_ok=True,
+                request_timeout=self.request_timeout
         ):
             if ok:
                 success += 1
