@@ -1,4 +1,3 @@
-import enum
 import hashlib
 from typing import Dict, Any, Optional, Union
 
@@ -25,3 +24,7 @@ def generate_key_url_ext(domain_id: str, url: str) -> Optional[str]:
 
 def generate_key_url_agg(domain_id: str, url: str, year: Union[int, str], dayofyear: Union[int, str]) -> Optional[str]:
     return f'{domain_id}-{str_digest(url)}-{year}-{dayofyear}' if year and dayofyear and url and domain_id else None
+
+
+def to_uint(s: str, default: int) -> int:
+    return int(s) if s and s.isdigit() else default
