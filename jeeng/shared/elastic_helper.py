@@ -80,4 +80,5 @@ class BulkUpserter:
             else:
                 errors.append(item)
         # TODO can retry here
+        self.elastic_client.indices.refresh(index=self.index)
         return BulkUpserterResult(op_type=op_type, success=success, errors=errors)
