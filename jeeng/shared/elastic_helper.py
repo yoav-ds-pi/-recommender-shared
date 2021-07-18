@@ -47,7 +47,7 @@ class BulkUpserterResult:
 
 
 class BulkUpserter:
-    def __init__(self, elastic_client: Elasticsearch, index: str, request_timeout: int = 60):
+    def __init__(self, elastic_client: Elasticsearch, index: str, request_timeout: int = 120):
         self.elastic_client = elastic_client
         self.index = index
         self.request_timeout = request_timeout
