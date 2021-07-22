@@ -1,3 +1,4 @@
+from logging import Logger
 from elasticsearch.client import Elasticsearch
 from elasticsearch.helpers import streaming_bulk
 from collections import Counter
@@ -33,16 +34,15 @@ class BulkUpserterResult:
     success: int
     errors: List[CompositeDict]
 
-    def print(self, name: str):
+    def log(self, name: str, logger: Logger):
         if not self.errors:
-            print(f'{name}: {self.success} ok')
+            logger.info(f'{name}: {self.success} ok')
         else:
-            print(f'{name}: {self.success} ok, {len(self.errors)} failed')
             error_types = (d[self.op_type].get('error', {}).get('type', "UNKNOWN_ERROR") for d in self.errors)
-            print("error_types: " + "; ".join(
+            break_down = "error_types: " + "; ".join(
                 f"{k}: {v}"
                 for k, v in sorted(Counter(error_types).items(), key=lambda t: -t[1]))
-            )
+            logger.warning(f'{name}: {self.success} ok, {len(self.errors)} failed, {break_down}')
         return self
 
 
