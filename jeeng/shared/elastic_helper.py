@@ -67,13 +67,13 @@ class BulkUpserter:
         success = 0
         errors = []
         for ok, item in streaming_bulk(
-                client=self.elastic_client,
-                actions=(self._prep_action(action, op_type) for action in actions) if op_type else actions,
-                raise_on_error=False,
-                raise_on_exception=True,
-                max_retries=3,
-                yield_ok=True,
-                request_timeout=self.request_timeout
+            client=self.elastic_client,
+            actions=(self._prep_action(action, op_type) for action in actions) if op_type else actions,
+            raise_on_error=False,
+            raise_on_exception=True,
+            max_retries=3,
+            yield_ok=True,
+            request_timeout=self.request_timeout
         ):
             if ok:
                 success += 1
