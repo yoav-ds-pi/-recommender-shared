@@ -11,6 +11,7 @@ CONFIDENCE = 'confidence'
 DATE = 'date'
 DESCRIPTION = 'description'
 
+DOC_CREATED_AT = 'doc_created_at'
 DOC_TYPE = 'doc_type'
 DOC_TYPE_URL = 'url_doc'
 DOC_TYPE_USER = 'user_doc'
