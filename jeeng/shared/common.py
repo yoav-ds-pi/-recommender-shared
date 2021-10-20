@@ -1,7 +1,14 @@
 import hashlib
-from typing import Dict, Any, Optional, Union
+from typing import Any, Optional, Union
 
-CompositeDict = Dict[str, Any]
+CompositeDict = dict[str, Any]
+
+RDB_URLS = 1  # SUB_TO_EXCLUDED_URLS, DOMAIN_TO_CANDIDATES
+RDB_SUB_TO_RECS = 2
+
+
+def sub_ids_to_keys(domain_id: str, sub_ids: list[str]) -> list[str]:
+    return [f'{domain_id}:{sub_id}' for sub_id in sub_ids]
 
 
 class UnimplementedException(Exception):
