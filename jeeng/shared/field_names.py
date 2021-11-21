@@ -43,6 +43,10 @@ NLU = 'nlu'
 PAGE_PROPERTIES = 'page_properties'
 PAYLOAD = 'payload'
 PI = 'powerinbox'
+
+POP_AVG = 'POP_AVG'
+POP_RATE = 'POP_RATE'
+
 PUBLISHED_AT = 'published_at'
 RECOMMENDED_URLS = 'recommended_urls'
 RELEVANCE = 'relevance'
