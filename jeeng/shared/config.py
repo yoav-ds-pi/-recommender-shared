@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 
 BASE_INDEX_SCORED_URLS = 'scored_urls'
 BASE_INDEX_URL_USER = 'url_user_index'
+BASE_INDEX_SUBSCRIBER_PASSIONS = 'subscriber_passions'
 
 
 @dataclass(frozen=True)
