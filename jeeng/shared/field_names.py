@@ -45,6 +45,7 @@ PAYLOAD = 'payload'
 PI = 'powerinbox'
 
 POP_AVG = 'POP_AVG'
+POP_KOL = 'POP_KOL'
 POP_RATE = 'POP_RATE'
 
 PUBLISHED_AT = 'published_at'
