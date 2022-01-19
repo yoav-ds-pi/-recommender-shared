@@ -1,16 +1,16 @@
 from signal import signal, SIGINT, SIGTERM
 
-go = True
+_go = True
 
 
 def is_go():
-    global go
-    return go
+    global _go
+    return _go
 
 
 def exit_gracefully(*_o):
-    global go
-    go = False
+    global _go
+    _go = False
 
 
 signal(SIGINT, exit_gracefully)
