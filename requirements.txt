@@ -1,1 +1,3 @@
+wheel~=0.37.1
+google-cloud-logging
 elasticsearch~=7.11.0
