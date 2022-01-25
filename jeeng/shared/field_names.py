@@ -48,6 +48,8 @@ POP_AVG = 'POP_AVG'
 POP_KOL = 'POP_KOL'
 POP_RATE = 'POP_RATE'
 
+FM_SCORE = 'fm_score'
+
 PUBLISHED_AT = 'published_at'
 RECOMMENDED_URLS = 'recommended_urls'
 RELEVANCE = 'relevance'
